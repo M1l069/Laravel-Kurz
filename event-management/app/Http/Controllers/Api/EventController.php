@@ -62,6 +62,12 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
+        // hodi sa pouzit ak by som chcel pri neautoruzovanom prístupe k update metode chcel spravit nieco ine ako
+        // vyhodit stranku 403 (resp. poslat kod 403)
+//        if (Gate::denies('update-event', $event)) {
+//            abort(403, 'Nie ste autorizovaný k aktualizácií tohto eventu');
+//        }
+        Gate::authorize('update-event', $event);
 
         $event->update(
             $request->validate([
