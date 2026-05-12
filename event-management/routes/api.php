@@ -13,10 +13,10 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('events', EventController::class)->only(['index', 'show']);
 
 Route::apiResource('events', EventController::class)->only(['store', 'update', 'destroy'])
-    ->middleware(['auth:sanctum']);
+    ->middleware(['auth:sanctum', 'throttle:api']);
 
 Route::apiResource('events.attendees', AttendeeController::class)
-    ->scoped()->only(['store', 'destroy'])->middleware(['auth:sanctum']);
+    ->scoped()->only(['store', 'destroy'])->middleware(['auth:sanctum', 'throttle:api']);
 
 Route::apiResource('events.attendees', AttendeeController::class)
     ->scoped()->only(['index', 'show']);
