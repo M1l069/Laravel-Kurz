@@ -1,18 +1,23 @@
 <?php
 
+use App\Models\Option;
 use Livewire\Component;
 use App\Models\Poll;
 use Livewire\Attributes\On;
 
-new class extends Component
-{
-/*    protected $listeners = [
-        'pollCreated' => 'render'
-    ]; -> stary zapis*/
+new class extends Component {
+    /*    protected $listeners = [
+            'pollCreated' => 'render'
+        ]; -> stary zapis*/
     #[On('pollCreated')] // novy zapis
-    public function render() {
+    public function render()
+    {
         $polls = Poll::with('options.votes')->latest()->get();
         return view('components.⚡polls', ['polls' => $polls]);
+    }
+
+    public function vote(Option $option): void {
+        $option->votes()->create();
     }
 };
 ?>
@@ -23,7 +28,7 @@ new class extends Component
             <h3 class="mb-4 text-xl"> {{ $poll->title }}</h3>
             @foreach($poll->options as $option)
                 <div class="mb-2">
-            <button class="btn"> Vote </button>
+                    <button class="btn" wire:click="vote({{ $option->id }})"> Hlasovať </button>
                     {{ $option->name }} ({{ $option->votes->count() }})
                 </div>
             @endforeach
