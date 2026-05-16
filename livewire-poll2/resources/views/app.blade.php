@@ -35,7 +35,15 @@
 <body class="container mx-auto mt-10 mb-10 max-w-lg">
 @livewireScripts
 
-@livewire('create-poll')
+    <div>
+        <h2 class="mb-4 mt-4 text-2xl">Vytvoriť anketu</h2>
+        @livewire('create-poll')
+    </div>
+<hr class="mt-4">
+    <div>
+        <h2 class="mb-4 mt-4 text-2xl">Dostupné ankety</h2>
+        @livewire('polls')
+    </div>
 </body>
 
 </html>
