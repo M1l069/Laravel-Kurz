@@ -8,6 +8,20 @@ new class extends Component
 {
     public $title;
     public $options = ['first'];
+    protected $rules = [
+        'title' => 'required|min:3|max:255',
+        'options' => 'required|array|min:1|max:10',
+        'options.*' => 'required|min:1|max:255',
+    ];
+
+    protected $messages = [
+        'options.*' => "Možnosť nemôže byť prázdna."
+    ];
+
+    public function updated($propertyName): void {
+        $this->validateOnly($propertyName);
+    }
+
 
     // bude volana len raz napr. na citanie z db
 //    public function mount($title) {}
@@ -22,14 +36,20 @@ new class extends Component
     }
 
     public function createPoll(): void {
-        $poll = Poll::create([
-            'title' => $this->title
-        ]);
+        $this->validate();
 
-        foreach($this->options as $optionName) {
-            $poll->options()->create(['name' => $optionName]);
-        }
+        Poll::create([
+            'title' => $this->title
+        ])->options()->createMany(
+            collect($this->options)->map(fn ($option) => ['name' => $option])->all()
+        );
+
+//        foreach($this->options as $optionName) {
+//            $poll->options()->create(['name' => $optionName]);
+//        }
 
         $this->reset(['title', 'options']);
     }
+
+
 };
