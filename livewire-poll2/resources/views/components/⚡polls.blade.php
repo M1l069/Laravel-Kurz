@@ -2,9 +2,14 @@
 
 use Livewire\Component;
 use App\Models\Poll;
+use Livewire\Attributes\On;
 
 new class extends Component
 {
+/*    protected $listeners = [
+        'pollCreated' => 'render'
+    ]; -> stary zapis*/
+    #[On('pollCreated')] // novy zapis
     public function render() {
         $polls = Poll::with('options.votes')->latest()->get();
         return view('components.⚡polls', ['polls' => $polls]);
