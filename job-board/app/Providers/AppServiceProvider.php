@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (app()->has('debugbar')) {
+            $debugbar = app('debugbar');
+            $debugbar->enableCollector('messages');
+            $debugbar->enableCollector('route');
+            $debugbar->enableCollector('models');
+            $debugbar->enableCollector('exceptions');
+            $debugbar->enableCollector('gate');
+            $debugbar->enableCollector('session');
+        }
     }
 }
